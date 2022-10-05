@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.listing.ListingFragment"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:id="@+id/listingTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Batman Movies"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_margin="10dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listing_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp" />
+    </LinearLayout>
+</layout>
