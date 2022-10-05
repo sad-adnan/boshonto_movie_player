@@ -13,10 +13,10 @@ interface MovieService {
     fun getFeaturedMovies(): Call<SearchMovieModel?>?
 
     //get batman movies from omdb
-//    @GET("?apikey=b9bd48a6&s=batman&page={page_no}")
-//    fun getBatmanMovies(
-//        @Path("page_no") page_no: Int
-//    ): Call<SearchMovieModel?>?
+    @GET("?apikey=b9bd48a6&s=batman")
+    fun getMoreBatmanMovies(
+        @Query("page") page: Int
+    ): Call<SearchMovieModel?>?
 
     @GET("?apikey=b9bd48a6&s=batman")
     fun getBatmanMovies(): Call<SearchMovieModel?>?

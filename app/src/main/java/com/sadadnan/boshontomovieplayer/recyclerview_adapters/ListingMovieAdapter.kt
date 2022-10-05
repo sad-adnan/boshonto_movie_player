@@ -28,38 +28,38 @@ class ListingMovieAdapter(val context: Context?, private var mList: List<Search?
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val movieViewModel = mList[position]
 
-//        if (position == mList.size - 3) {
-//            (binding.root.context as? LifecycleOwner)?.let { lo ->
-//                viewModel.loadMoreBatmanMovies(mList.size/10).observe(lo){
-//                    when(it.status){
-//                        Resource.Status.SUCCESS -> {
-//                            //show data
-//                            val smm = it.data
-//                            val data = smm?.search
-//                            if (data != null) {
-//                                if (data.isNotEmpty()){
-//                                    //convert list to arrayList
-//                                    val arrayList = ArrayList<Search?>()
-//                                    arrayList.addAll(mList)
-//                                    arrayList.addAll(data)
-//                                    //convert arrayList to list
-//                                    mList = arrayList.toList()
-//                                    notifyDataSetChanged()
-//                                }
-//                            }
-//                        }
-//                        Resource.Status.ERROR -> {
-//                            //show error
-//                            Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
-//                        }
-//                        Resource.Status.LOADING -> {
-//                            //show loading
-//                            Toast.makeText(context, "Loading", Toast.LENGTH_SHORT).show()
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        if (position == mList.size - 3) {
+            (binding.root.context as? LifecycleOwner)?.let { lo ->
+                viewModel.loadMoreBatmanMovies((mList.size/10)+1).observe(lo){
+                    when(it.status){
+                        Resource.Status.SUCCESS -> {
+                            //show data
+                            val smm = it.data
+                            val data = smm?.search
+                            if (data != null) {
+                                if (data.isNotEmpty()){
+                                    //convert list to arrayList
+                                    val arrayList = ArrayList<Search?>()
+                                    arrayList.addAll(mList)
+                                    arrayList.addAll(data)
+                                    //convert arrayList to list
+                                    mList = arrayList.toList()
+                                    notifyDataSetChanged()
+                                }
+                            }
+                        }
+                        Resource.Status.ERROR -> {
+                            //show error
+                            Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                        }
+                        Resource.Status.LOADING -> {
+                            //show loading
+                            Toast.makeText(context, "Loading", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+        }
 
         holder.bind(movieViewModel)
     }

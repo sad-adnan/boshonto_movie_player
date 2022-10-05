@@ -135,7 +135,7 @@ class MovieRepository {
     }
 
     fun loadMoreBatmanMovies(page: Int): LiveData<Resource<SearchMovieModel>> {
-        val call = api?.getBatmanMovies()
+        val call = api?.getMoreBatmanMovies(page)
         val movieLiveData = MutableLiveData<Resource<SearchMovieModel>>()
 
         movieLiveData.value = Resource(Resource.Status.LOADING,null,"Loading")
