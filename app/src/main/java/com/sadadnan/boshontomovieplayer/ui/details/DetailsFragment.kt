@@ -7,10 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import com.sadadnan.boshontomovieplayer.R
 import com.sadadnan.boshontomovieplayer.binding_adapters.setOnlineImage
 import com.sadadnan.boshontomovieplayer.databinding.FragmentDetailsBinding
 import com.sadadnan.boshontomovieplayer.databinding.FragmentListingBinding
+import com.sadadnan.boshontomovieplayer.network.MovieRatingIcon
 import com.sadadnan.boshontomovieplayer.network.Resource
 
 // TODO: Rename parameter arguments, choose names that match
@@ -73,6 +75,10 @@ class DetailsFragment : Fragment() {
             when(mdm.status){
                 Resource.Status.SUCCESS -> {
                     binding.movieItem = mdm.data
+
+                    val img = MovieRatingIcon.getRatingIcon(mdm.data?.rated!!)
+
+                    binding.ratingIV.setImageDrawable(ResourcesCompat.getDrawable(resources, img, null))
                 }
                 Resource.Status.ERROR -> {
                     Toast.makeText(activity, "Error: ${mdm.message}", Toast.LENGTH_SHORT).show()

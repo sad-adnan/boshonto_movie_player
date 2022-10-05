@@ -78,7 +78,7 @@ class MainFragment : Fragment() {
         binding.batmanMore.setOnClickListener {
             //navigate to ListingFragment
             activity?.supportFragmentManager?.beginTransaction()
-                ?.add(R.id.container, ListingFragment.newInstance())?.addToBackStack("mainFragment")
+                ?.replace(R.id.container, ListingFragment.newInstance())?.addToBackStack("mainFragment")
                 ?.commitNow()
         }
     }
@@ -136,7 +136,7 @@ class MainFragment : Fragment() {
                             val movieAdapter = MovieAdapter(context,data, MovieItemClickListener { movieId ->
                                 //load movie details fragment with imdbID
                                val transection =  activity?.supportFragmentManager?.beginTransaction()
-                                transection?.add(R.id.container, DetailsFragment.newInstance(movieId))
+                                transection?.replace(R.id.container, DetailsFragment.newInstance(movieId))
                                 transection?.addToBackStack("mainFragment")
                                 transection?.commitAllowingStateLoss()
                             })

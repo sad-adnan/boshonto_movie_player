@@ -16,41 +16,225 @@
         tools:context=".ui.details.DetailsFragment"
         android:background="@color/white">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="10dp"
-            android:background="@color/blue">
-            <ImageView
-                android:id="@+id/backBtn"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/back_icon"
-                app:tint="@color/white"
-                android:layout_margin="10dp"/>
-            <TextView
+            android:layout_height="wrap_content">
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{movieItem.title}"
-                android:textSize="25sp"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:textAlignment="center"
-                android:gravity="center_horizontal"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                tools:text="Movie Title"
-                android:layout_margin="10dp"/>
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/blue">
+                    <ImageView
+                        android:id="@+id/backBtn"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/back_icon"
+                        app:tint="@color/white"
+                        android:layout_margin="10dp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{movieItem.title}"
+                        android:textSize="25sp"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:textAlignment="center"
+                        android:gravity="center_horizontal"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        tools:text="Movie Title"
+                        android:layout_margin="10dp"/>
 
-        </LinearLayout>
+                </LinearLayout>
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:setOnlineImage="@{movieItem.poster}"
-            android:scaleType="centerCrop"
-            android:layout_margin="10dp"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:setOnlineImage="@{movieItem.poster}"
+                    android:scaleType="centerCrop"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="-5dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{movieItem.imdbRating}"
+                        android:textSize="16sp"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:drawableLeft="@drawable/star_icon"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_horizontal"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        tools:text="7.1"
+                        android:layout_margin="5dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{movieItem.runtime}"
+                        android:textSize="16sp"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:drawableLeft="@drawable/clock_icon"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_horizontal"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        tools:text="182 min"
+                        android:layout_margin="5dp"/>
+
+                    <ImageView
+                        android:id="@+id/ratingIV"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_pg"
+                        android:layout_marginLeft="10dp"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{movieItem.genre}"
+                    android:textSize="16sp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:drawableLeft="@drawable/genre_icon"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_horizontal"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    tools:text="Action, Adventure, Sci-Fi"
+                    android:layout_margin="5dp"
+                    android:layout_gravity="center"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:weightSum="2">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{movieItem.language}"
+                        android:textSize="16sp"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:drawableLeft="@drawable/ic_language"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_horizontal"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        tools:text="English"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{movieItem.country}"
+                        android:textSize="16sp"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:drawableLeft="@drawable/ic_flag"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_horizontal"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        tools:text="United States"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:weightSum="2">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{movieItem.director}"
+                        android:textSize="16sp"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:drawableLeft="@drawable/ic_director_chair"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_horizontal"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        tools:text="Zack Snyder"
+                        android:layout_margin="5dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{movieItem.released}"
+                        android:textSize="16sp"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:drawableLeft="@drawable/ic_calendar"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_horizontal"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        tools:text="23 Mar 2016"
+                        android:layout_margin="5dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{movieItem.actors}"
+                    android:textSize="16sp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:drawableLeft="@drawable/ic_man"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_horizontal"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    tools:text="Amy Adams, Ben Affleck, Henry Cavill"
+                    android:layout_margin="5dp"
+                    android:layout_gravity="center"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{movieItem.plot}"
+                    android:textSize="22sp"
+                    android:maxLines="5"
+                    android:ellipsize="end"
+                    android:drawableLeft="@drawable/ic_storyboard"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_horizontal"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    tools:text="Batman is manipulated by Lex Luthor to fear Superman. Superman´s existence is meanwhile dividing the world and he is framed for murder during an international crisis. The heroes clash and force the neutral Wonder Woman to reemerge."
+                    android:layout_margin="5dp"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
 
 
