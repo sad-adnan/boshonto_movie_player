@@ -3,6 +3,7 @@ package com.sadadnan.boshontomovieplayer.network.service
 import com.sadadnan.boshontomovieplayer.model.details.MovieDetailsModel
 import com.sadadnan.boshontomovieplayer.model.popular.PopularMovieModel
 import com.sadadnan.boshontomovieplayer.model.search.SearchMovieModel
+import com.sadadnan.boshontomovieplayer.model.tmdb_details.TmdbDetailsModel
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -34,4 +35,8 @@ interface MovieService {
                          @Query("page") pageNumber: Int,
                          @Query("region") region:String,
                          @Query("with_release_type") releaseType: String): Call<PopularMovieModel>
+
+    @GET("movie/{movie_id}")
+    fun getMovieImdbId(@Path("movie_id") movieId: String,
+                       @Query("api_key") apiKey: String): Call<TmdbDetailsModel>
 }

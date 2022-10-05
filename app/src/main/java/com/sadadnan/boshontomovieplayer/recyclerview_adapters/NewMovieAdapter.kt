@@ -13,7 +13,9 @@ import com.sadadnan.boshontomovieplayer.databinding.RowPopularMovieBinding
 import com.sadadnan.boshontomovieplayer.model.popular.PopularResult
 import com.sadadnan.boshontomovieplayer.model.search.Search
 
-class NewMovieAdapter(val context: Context?, private val mList: List<PopularResult?>) : RecyclerView.Adapter<NewMovieAdapter.ViewHolder>() {
+class NewMovieAdapter(val context: Context?, private val mList: List<PopularResult?>,
+                      private val listener: NewMovieItemClickListener
+) : RecyclerView.Adapter<NewMovieAdapter.ViewHolder>() {
 
     private lateinit var binding : RowPopularMovieBinding
 
@@ -28,8 +30,13 @@ class NewMovieAdapter(val context: Context?, private val mList: List<PopularResu
 
     // binds the list items to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val movieViewModel = mList[position]
-        holder.bind(movieViewModel)
+        val data = mList[position]
+
+        holder.itemView.setOnClickListener { view ->
+            data?.let { it -> listener.onCLick(it) }
+        }
+
+        holder.bind(data)
     }
 
 
@@ -45,5 +52,9 @@ class NewMovieAdapter(val context: Context?, private val mList: List<PopularResu
 //            binding.posterUrl = "https://image.tmdb.org/t/p/w500"+popularModel?.posterPath
             binding.posterUrl = "https://image.tmdb.org/t/p/original/"+popularModel?.posterPath
         }
+    }
+
+    class NewMovieItemClickListener(val callback: (id: String) -> Unit){
+        fun onCLick(pm:PopularResult) = pm.id?.let { callback(it.toString()) }
     }
 }

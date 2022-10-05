@@ -11,7 +11,10 @@ import com.sadadnan.boshontomovieplayer.model.search.Search
 import com.sadadnan.boshontomovieplayer.network.Resource
 import com.sadadnan.boshontomovieplayer.ui.main.MainViewModel
 
-class ListingMovieAdapter(val context: Context?, private var mList: List<Search?>, private val viewModel: MainViewModel) : RecyclerView.Adapter<ListingMovieAdapter.ViewHolder>() {
+class ListingMovieAdapter(val context: Context?, private var mList: List<Search?>,
+                          private val viewModel: MainViewModel,
+                          private val listener: MovieAdapter.MovieItemClickListener
+) : RecyclerView.Adapter<ListingMovieAdapter.ViewHolder>() {
 
     private lateinit var binding : RowListingMovieBinding
 
@@ -59,6 +62,10 @@ class ListingMovieAdapter(val context: Context?, private var mList: List<Search?
                     }
                 }
             }
+        }
+
+        holder.itemView.setOnClickListener { view->
+            movieViewModel?.let { it -> listener.onCLick(it) }
         }
 
         holder.bind(movieViewModel)

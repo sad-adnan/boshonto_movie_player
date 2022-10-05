@@ -15,6 +15,7 @@ import com.sadadnan.boshontomovieplayer.databinding.FragmentMainBinding
 import com.sadadnan.boshontomovieplayer.network.Resource
 import com.sadadnan.boshontomovieplayer.recyclerview_adapters.ListingMovieAdapter
 import com.sadadnan.boshontomovieplayer.recyclerview_adapters.MovieAdapter
+import com.sadadnan.boshontomovieplayer.ui.details.DetailsFragment
 import com.sadadnan.boshontomovieplayer.ui.main.MainViewModel
 
 class ListingFragment : Fragment() {
@@ -65,7 +66,14 @@ class ListingFragment : Fragment() {
                     val data = smm?.search
                     if (data != null) {
                         if (data.isNotEmpty()){
-                            val movieAdapter = ListingMovieAdapter(context,data,viewModel)
+                            val movieAdapter = ListingMovieAdapter(context,data,viewModel,
+                                MovieAdapter.MovieItemClickListener {movieId ->
+                                    //load movie details fragment with imdbID
+                                    val transection =  activity?.supportFragmentManager?.beginTransaction()
+                                    transection?.replace(R.id.container, DetailsFragment.newInstance(movieId))
+                                    transection?.addToBackStack("mainFragment")
+                                    transection?.commitAllowingStateLoss()
+                            })
                             binding.listingRecyclerView.adapter = movieAdapter
                             movieAdapter.notifyDataSetChanged()
                         }

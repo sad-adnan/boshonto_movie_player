@@ -31,17 +31,14 @@ class MovieAdapter(
     // binds the list items to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data = mList[position]
-        holder.itemView.setOnClickListener { view ->
+        holder.itemView.setOnClickListener { view->
             data?.let { it -> listener.onCLick(it) }
         }
 
         holder.bind(data)
     }
 
-    private fun loadFragment(newInstance: Unit) {
-        //load fragment
 
-    }
 
 
     // return the number of the items in the list

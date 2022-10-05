@@ -7,4 +7,8 @@ class DetailsViewModel : ViewModel() {
     private val repository: MovieRepository = MovieRepository()
 
     fun getMovieDetails(movieID: String) = repository.getMovieDetails(movieID)
+
+    fun getTmdbMovieDetails(movieID: String) = repository.getTmdbMovieDetails(movieID)
+
+
 }

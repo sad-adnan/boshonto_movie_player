@@ -14,4 +14,6 @@ class MainViewModel : ViewModel() {
     fun getPopularMovies() = repository.getPopularMovies()
 
     fun loadMoreBatmanMovies(page: Int) = repository.loadMoreBatmanMovies(page)
+
+    fun getTmdbMovieDetails(movieID: String) = repository.getTmdbMovieDetails(movieID)
 }

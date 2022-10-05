@@ -8,6 +8,7 @@ import com.sadadnan.boshontomovieplayer.model.details.MovieDetailsModel
 import com.sadadnan.boshontomovieplayer.model.popular.PopularMovieModel
 import com.sadadnan.boshontomovieplayer.model.popular.PopularResult
 import com.sadadnan.boshontomovieplayer.model.search.SearchMovieModel
+import com.sadadnan.boshontomovieplayer.model.tmdb_details.TmdbDetailsModel
 import com.sadadnan.boshontomovieplayer.network.AllApi
 import com.sadadnan.boshontomovieplayer.network.Resource
 import com.sadadnan.boshontomovieplayer.network.RetrofitClass
@@ -195,6 +196,42 @@ class MovieRepository {
             }
 
             override fun onFailure(call: Call<MovieDetailsModel?>?, t: Throwable?) {
+                Log.d(tag, "onFailure: " + t?.message)
+                movieLiveData.value = Resource(Resource.Status.ERROR,null,"Data not found")
+            }
+        })
+
+        return movieLiveData
+    }
+
+    fun getTmdbMovieDetails(movieID: String) : LiveData<Resource<TmdbDetailsModel>> {
+        // get featured movies from omdb
+        val tmdbApi = TmdbRetrofitClass.createService()
+        val call = tmdbApi?.getMovieImdbId(movieID,AllApi.API_KEY_TMDB)
+        val movieLiveData = MutableLiveData<Resource<TmdbDetailsModel>>()
+
+        movieLiveData.value = Resource(Resource.Status.LOADING,null,"Loading")
+
+        call?.enqueue(object : Callback<TmdbDetailsModel> {
+            override fun onResponse(
+                call: Call<TmdbDetailsModel?>?,
+                response: Response<TmdbDetailsModel?>?
+            ) {
+                if (response?.isSuccessful!!) {
+                    val detailsMovieModel: TmdbDetailsModel? = response.body()
+                    if (detailsMovieModel != null) {
+                        Log.d(tag, "onResponse: $detailsMovieModel")
+                        //set featured movies to recyclerview
+                        movieLiveData.value = Resource(Resource.Status.SUCCESS,detailsMovieModel,"Data Loaded")
+                    }else{
+                        movieLiveData.value = Resource(Resource.Status.ERROR,null,"Data not found")
+                    }
+                }else{
+                    movieLiveData.value = Resource(Resource.Status.ERROR,null,"Data not found")
+                }
+            }
+
+            override fun onFailure(call: Call<TmdbDetailsModel?>?, t: Throwable?) {
                 Log.d(tag, "onFailure: " + t?.message)
                 movieLiveData.value = Resource(Resource.Status.ERROR,null,"Data not found")
             }

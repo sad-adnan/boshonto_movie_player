@@ -77,9 +77,12 @@ class MainFragment : Fragment() {
 
         binding.batmanMore.setOnClickListener {
             //navigate to ListingFragment
-            activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.container, ListingFragment.newInstance())?.addToBackStack("mainFragment")
-                ?.commitNow()
+
+            val transection =  activity?.supportFragmentManager?.beginTransaction()
+            transection?.replace(R.id.container, ListingFragment.newInstance())
+            transection?.addToBackStack("mainFragment")
+            transection?.commitAllowingStateLoss()
+
         }
     }
 
@@ -92,7 +95,6 @@ class MainFragment : Fragment() {
 
     private fun observe() {
         viewModel.getFeaturedMovies().observe(viewLifecycleOwner) {
-
             when(it.status){
                 Resource.Status.SUCCESS -> {
                     //show data
@@ -100,13 +102,14 @@ class MainFragment : Fragment() {
                     val data = smm?.search
                     featuredMovieList = data
                     //have only 5 data
+                    try {
+                        imageList.clear()
+                    } catch (e: Exception) {
+                    }
                     for (i in 0..4){
                         val movie = data?.get(i)
                         val title = movie?.title
                         val year = movie?.year
-                        val poster = movie?.poster
-                        val imdbID = movie?.imdbID
-                        val type = movie?.type
 
                         imageList.add(SlideModel(data?.get(i)?.poster, "$title ($year)"))
 
@@ -165,7 +168,37 @@ class MainFragment : Fragment() {
                     val data = pmm?.popularResults
                     if (data != null) {
                         if (data.isNotEmpty()){
-                            val movieAdapter = NewMovieAdapter(context,data)
+                            val movieAdapter = NewMovieAdapter(context,data, NewMovieAdapter.NewMovieItemClickListener { it ->
+                                //load movie details fragment with imdbID
+                                viewModel.getTmdbMovieDetails(it).observe(viewLifecycleOwner){ tdm ->
+                                    when(tdm.status){
+                                        Resource.Status.SUCCESS -> {
+                                            //show data
+                                            val transection =  activity?.supportFragmentManager?.beginTransaction()
+                                            tdm.data?.imdbId?.let { it1 ->
+                                                DetailsFragment.newInstance(
+                                                    it1
+                                                )
+                                            }?.let { it2 ->
+                                                transection?.replace(R.id.container,
+                                                    it2
+                                                )
+                                            }
+                                            transection?.addToBackStack("mainFragment")
+                                            transection?.commitAllowingStateLoss()
+                                        }
+                                        Resource.Status.ERROR -> {
+                                            //show error
+                                            Toast.makeText(activity,"Error ${tdm.message}",Toast.LENGTH_SHORT).show()
+                                        }
+                                        Resource.Status.LOADING -> {
+                                            //show loading
+                                            //Toast.makeText(activity,"Loading",Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                }
+
+                            })
                             binding.latestRecyclerView.adapter = movieAdapter
                             movieAdapter.notifyDataSetChanged()
                         }
