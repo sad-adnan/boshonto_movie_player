@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".ui.listing.ListingFragment"
+        android:background="@color/white"
         android:layout_margin="10dp">
 
         <TextView

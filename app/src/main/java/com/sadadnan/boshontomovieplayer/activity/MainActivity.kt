@@ -3,6 +3,7 @@ package com.sadadnan.boshontomovieplayer.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.sadadnan.boshontomovieplayer.R
 import com.sadadnan.boshontomovieplayer.ui.main.MainFragment
 
@@ -13,8 +14,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
+                .add(R.id.container, MainFragment.newInstance())
                 .commitNow()
+        }
+    }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack();
+        } else {
+            super.onBackPressed()
         }
     }
 

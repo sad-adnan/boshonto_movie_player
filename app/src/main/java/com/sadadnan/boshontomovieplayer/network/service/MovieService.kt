@@ -1,5 +1,6 @@
 package com.sadadnan.boshontomovieplayer.network.service
 
+import com.sadadnan.boshontomovieplayer.model.details.MovieDetailsModel
 import com.sadadnan.boshontomovieplayer.model.popular.PopularMovieModel
 import com.sadadnan.boshontomovieplayer.model.search.SearchMovieModel
 import retrofit2.Call
@@ -20,6 +21,11 @@ interface MovieService {
 
     @GET("?apikey=b9bd48a6&s=batman")
     fun getBatmanMovies(): Call<SearchMovieModel?>?
+
+    @GET("?apikey=b9bd48a6")
+    fun getMovieDetails(
+        @Query("i") imdbId: String
+    ): Call<MovieDetailsModel?>?
 
     //get Latest movies from tmdb
     @GET("movie/popular")

@@ -2,7 +2,6 @@ package com.sadadnan.boshontomovieplayer.ui.main
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +17,9 @@ import com.sadadnan.boshontomovieplayer.model.search.Search
 import com.sadadnan.boshontomovieplayer.model.search.SearchMovieModel
 import com.sadadnan.boshontomovieplayer.network.Resource
 import com.sadadnan.boshontomovieplayer.recyclerview_adapters.MovieAdapter
+import com.sadadnan.boshontomovieplayer.recyclerview_adapters.MovieAdapter.*
 import com.sadadnan.boshontomovieplayer.recyclerview_adapters.NewMovieAdapter
+import com.sadadnan.boshontomovieplayer.ui.details.DetailsFragment
 import com.sadadnan.boshontomovieplayer.ui.listing.ListingFragment
 
 class MainFragment : Fragment() {
@@ -77,7 +78,7 @@ class MainFragment : Fragment() {
         binding.batmanMore.setOnClickListener {
             //navigate to ListingFragment
             activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.container, ListingFragment.newInstance())
+                ?.add(R.id.container, ListingFragment.newInstance())?.addToBackStack("mainFragment")
                 ?.commitNow()
         }
     }
@@ -124,7 +125,7 @@ class MainFragment : Fragment() {
             }
         }
 
-        viewModel.getBatmanMovies().observe(viewLifecycleOwner){
+        viewModel.getBatmanMovies().observe(viewLifecycleOwner){ it ->
             when(it.status){
                 Resource.Status.SUCCESS -> {
                     //show data
@@ -132,7 +133,13 @@ class MainFragment : Fragment() {
                     val data = smm?.search
                     if (data != null) {
                         if (data.isNotEmpty()){
-                            val movieAdapter = MovieAdapter(context,data)
+                            val movieAdapter = MovieAdapter(context,data, MovieItemClickListener { movieId ->
+                                //load movie details fragment with imdbID
+                               val transection =  activity?.supportFragmentManager?.beginTransaction()
+                                transection?.add(R.id.container, DetailsFragment.newInstance(movieId))
+                                transection?.addToBackStack("mainFragment")
+                                transection?.commitAllowingStateLoss()
+                            })
                             binding.batmanRecyclerView.adapter = movieAdapter
                             movieAdapter.notifyDataSetChanged()
                         }

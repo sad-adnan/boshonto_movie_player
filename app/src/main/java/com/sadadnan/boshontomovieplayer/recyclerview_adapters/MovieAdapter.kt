@@ -10,8 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sadadnan.boshontomovieplayer.R
 import com.sadadnan.boshontomovieplayer.databinding.RowMovieBinding
 import com.sadadnan.boshontomovieplayer.model.search.Search
+import com.sadadnan.boshontomovieplayer.ui.details.DetailsFragment
 
-class MovieAdapter(val context: Context?, private val mList: List<Search?>) : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
+class MovieAdapter(
+    val context: Context?, private val mList: List<Search?>,
+    private val listener: MovieItemClickListener
+) : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
 
     private lateinit var binding : RowMovieBinding
 
@@ -26,8 +30,17 @@ class MovieAdapter(val context: Context?, private val mList: List<Search?>) : Re
 
     // binds the list items to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val movieViewModel = mList[position]
-        holder.bind(movieViewModel)
+        val data = mList[position]
+        holder.itemView.setOnClickListener { view ->
+            data?.let { it -> listener.onCLick(it) }
+        }
+
+        holder.bind(data)
+    }
+
+    private fun loadFragment(newInstance: Unit) {
+        //load fragment
+
     }
 
 
@@ -41,5 +54,9 @@ class MovieAdapter(val context: Context?, private val mList: List<Search?>) : Re
         fun bind(searchModel: Search?){
             binding.movieItem = searchModel
         }
+    }
+
+    class MovieItemClickListener(val callback: (id: String) -> Unit){
+        fun onCLick(tm:Search) = tm.imdbID?.let { callback(it) }
     }
 }

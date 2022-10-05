@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MutableLiveData
+import com.sadadnan.boshontomovieplayer.model.details.MovieDetailsModel
 import com.sadadnan.boshontomovieplayer.model.popular.PopularMovieModel
 import com.sadadnan.boshontomovieplayer.model.popular.PopularResult
 import com.sadadnan.boshontomovieplayer.model.search.SearchMovieModel
@@ -160,6 +161,40 @@ class MovieRepository {
             }
 
             override fun onFailure(call: Call<SearchMovieModel?>?, t: Throwable?) {
+                Log.d(tag, "onFailure: " + t?.message)
+                movieLiveData.value = Resource(Resource.Status.ERROR,null,"Data not found")
+            }
+        })
+
+        return movieLiveData
+    }
+
+    fun getMovieDetails(movieID: String): LiveData<Resource<MovieDetailsModel>> {
+        val call = api?.getMovieDetails(movieID)
+        val movieLiveData = MutableLiveData<Resource<MovieDetailsModel>>()
+
+        movieLiveData.value = Resource(Resource.Status.LOADING,null,"Loading")
+
+        call?.enqueue(object : Callback<MovieDetailsModel?> {
+            override fun onResponse(
+                call: Call<MovieDetailsModel?>?,
+                response: Response<MovieDetailsModel?>?
+            ) {
+                if (response?.isSuccessful!!) {
+                    val movieDetailsModel: MovieDetailsModel? = response.body()
+                    if (movieDetailsModel != null) {
+                        Log.d(tag, "onResponse: $movieDetailsModel")
+                        //set featured movies to recyclerview
+                        movieLiveData.value = Resource(Resource.Status.SUCCESS,movieDetailsModel,"Data Loaded")
+                    }else{
+                        movieLiveData.value = Resource(Resource.Status.ERROR,null,"Data not found")
+                    }
+                }else{
+                    movieLiveData.value = Resource(Resource.Status.ERROR,null,"Data not found")
+                }
+            }
+
+            override fun onFailure(call: Call<MovieDetailsModel?>?, t: Throwable?) {
                 Log.d(tag, "onFailure: " + t?.message)
                 movieLiveData.value = Resource(Resource.Status.ERROR,null,"Data not found")
             }

@@ -16,7 +16,7 @@ fun TextView.convertToString(num : Int){
 }
 
 @BindingAdapter("app:setOnlineImage")
-fun ImageView.setOnlineImage(url: String){
+fun ImageView.setOnlineImage(url: String?){
     try {
         try {
             Picasso.get().load(url).placeholder(R.mipmap.ic_launcher).fit().into(this)
