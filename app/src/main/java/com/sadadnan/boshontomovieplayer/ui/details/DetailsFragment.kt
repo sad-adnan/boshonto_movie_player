@@ -28,8 +28,11 @@ private val MOVIE_ID = "movieID"
 class DetailsFragment : Fragment() {
 
 
-
+    private var playbackPosition = 0L
     private var movieID: String? = null
+
+    var player: ExoPlayer? = null
+
     companion object {
         fun newInstance(movieID: String) = DetailsFragment().apply {
             arguments = Bundle().apply {
@@ -89,16 +92,16 @@ class DetailsFragment : Fragment() {
 
 
     private fun playVideo2(dashUri: String) {
-        val exoPlayer = ExoPlayer.Builder(requireContext()).build()
-        exoPlayer.playWhenReady = true
-        binding.exoPlayerView.player = exoPlayer
+        val player = ExoPlayer.Builder(requireContext()).build()
+        player.playWhenReady = true
+        binding.exoPlayerView.player = player
         val defaultHttpDataSourceFactory = DefaultHttpDataSource.Factory()
         val mediaItem = MediaItem.fromUri(dashUri)
         val mediaSource = DashMediaSource.Factory(defaultHttpDataSourceFactory).createMediaSource(mediaItem)
-        exoPlayer.setMediaSource(mediaSource)
-//        exoPlayer.seekTo(playbackPosition)
+        player.setMediaSource(mediaSource)
+        player.seekTo(playbackPosition)
 //        exoPlayer.playWhenReady = playWhenReady
-        exoPlayer.prepare()
+        player.prepare()
     }
 
     private fun observe() {
@@ -128,19 +131,17 @@ class DetailsFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        binding.exoPlayerView.player?.stop()
+        binding.exoPlayerView.player?.pause()
         if (Util.SDK_INT >= 24) {
             releasePlayer();
         }
     }
 
     private fun releasePlayer() {
-        var player = binding.exoPlayerView.player
         if (player != null) {
-            val playWhenReady = player.playWhenReady
-            val playbackPosition = player.currentPosition
-            player.release();
-            player = null;
+            val playWhenReady = player!!.playWhenReady
+            playbackPosition = player!!.currentPosition
+            player!!.release()
         }
     }
 
