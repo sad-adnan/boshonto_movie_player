@@ -100,7 +100,6 @@ class DetailsFragment : Fragment() {
         val mediaItem = MediaItem.fromUri(dashUri)
         val mediaSource = DashMediaSource.Factory(defaultHttpDataSourceFactory).createMediaSource(mediaItem)
         player.setMediaSource(mediaSource)
-        Log.e("playback", "playVideo2-103: ${GlobalVar.playbackPosition}", )
         player.seekTo(playbackPosition)
 //        exoPlayer.playWhenReady = playWhenReady
         player.prepare()
@@ -149,11 +148,8 @@ class DetailsFragment : Fragment() {
         player = binding.exoPlayerView.player as ExoPlayer?
         if (player != null) {
             val playWhenReady = player!!.playWhenReady
-            Log.e("playback", "playVideo2-before: ${GlobalVar.playbackPosition}" )
             GlobalVar.playbackPosition = player!!.currentPosition
-            Log.e("playback", "playVideo2-after: ${GlobalVar.playbackPosition}", )
             //player!!.release()
-            Log.e("playback", "playVideo2-later: ${GlobalVar.playbackPosition}", )
         }
     }
 
