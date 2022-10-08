@@ -1,6 +1,7 @@
 package com.sadadnan.boshontomovieplayer.ui.details
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +29,7 @@ private val MOVIE_ID = "movieID"
 class DetailsFragment : Fragment() {
 
 
-    private var playbackPosition = 0L
+    private val playbackPosition get() = GlobalVar.playbackPosition
     private var movieID: String? = null
 
     var player: ExoPlayer? = null
@@ -83,7 +84,7 @@ class DetailsFragment : Fragment() {
             binding.exoPlayerView.visibility = View.VISIBLE
             binding.watchOnlineBtn.visibility = View.GONE
 
-            releasePlayer()
+            //releasePlayer()
 
             playVideo2(GlobalVar.demoDashUrl)
         }
@@ -99,6 +100,7 @@ class DetailsFragment : Fragment() {
         val mediaItem = MediaItem.fromUri(dashUri)
         val mediaSource = DashMediaSource.Factory(defaultHttpDataSourceFactory).createMediaSource(mediaItem)
         player.setMediaSource(mediaSource)
+        Log.e("playback", "playVideo2-103: ${GlobalVar.playbackPosition}", )
         player.seekTo(playbackPosition)
 //        exoPlayer.playWhenReady = playWhenReady
         player.prepare()
@@ -129,19 +131,29 @@ class DetailsFragment : Fragment() {
         _binding = null
     }
 
+    override fun onResume() {
+        binding.exoPlayerView.player?.playWhenReady = true
+        binding.exoPlayerView.player?.seekTo(playbackPosition)
+        super.onResume()
+    }
+
     override fun onStop() {
         super.onStop()
         binding.exoPlayerView.player?.pause()
         if (Util.SDK_INT >= 24) {
-            releasePlayer();
+            releasePlayer()
         }
     }
 
     private fun releasePlayer() {
+        player = binding.exoPlayerView.player as ExoPlayer?
         if (player != null) {
             val playWhenReady = player!!.playWhenReady
-            playbackPosition = player!!.currentPosition
-            player!!.release()
+            Log.e("playback", "playVideo2-before: ${GlobalVar.playbackPosition}" )
+            GlobalVar.playbackPosition = player!!.currentPosition
+            Log.e("playback", "playVideo2-after: ${GlobalVar.playbackPosition}", )
+            //player!!.release()
+            Log.e("playback", "playVideo2-later: ${GlobalVar.playbackPosition}", )
         }
     }
 
