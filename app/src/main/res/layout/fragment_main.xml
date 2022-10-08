@@ -32,19 +32,24 @@
                     android:textStyle="bold"
                     android:layout_margin="10dp"/>
 
-                <com.denzcoskun.imageslider.ImageSlider
+<!--                <com.denzcoskun.imageslider.ImageSlider-->
+<!--                    android:id="@+id/image_slider"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="200dp"-->
+<!--                    app:iss_auto_cycle="true"-->
+<!--                    app:iss_period="2000"-->
+<!--                    app:iss_delay="100"-->
+<!--                    android:clickable="true"-->
+<!--                    android:focusable="true"-->
+<!--                    app:iss_placeholder="@drawable/placeholder"-->
+<!--                    app:iss_error_image="@drawable/error"-->
+<!--                    app:iss_selected_dot="@drawable/default_selected_dot"-->
+<!--                    app:iss_unselected_dot="@drawable/default_unselected_dot"/>-->
+
+                <org.imaginativeworld.whynotimagecarousel.ImageCarousel
                     android:id="@+id/image_slider"
-                    android:layout_width="wrap_content"
-                    android:layout_height="200dp"
-                    app:iss_auto_cycle="true"
-                    app:iss_period="2000"
-                    app:iss_delay="100"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:iss_placeholder="@drawable/placeholder"
-                    app:iss_error_image="@drawable/error"
-                    app:iss_selected_dot="@drawable/default_selected_dot"
-                    app:iss_unselected_dot="@drawable/default_unselected_dot"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -102,7 +107,8 @@
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:layout_margin="10dp"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1"
+                        android:visibility="gone"/>
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

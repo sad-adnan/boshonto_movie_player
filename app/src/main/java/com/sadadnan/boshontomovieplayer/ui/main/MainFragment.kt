@@ -6,10 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.denzcoskun.imageslider.interfaces.ItemClickListener
-import com.denzcoskun.imageslider.models.SlideModel
+import androidx.viewbinding.ViewBinding
 import com.sadadnan.boshontomovieplayer.R
 import com.sadadnan.boshontomovieplayer.activity.MainActivity
 import com.sadadnan.boshontomovieplayer.databinding.FragmentMainBinding
@@ -21,6 +21,9 @@ import com.sadadnan.boshontomovieplayer.recyclerview_adapters.MovieAdapter.*
 import com.sadadnan.boshontomovieplayer.recyclerview_adapters.NewMovieAdapter
 import com.sadadnan.boshontomovieplayer.ui.details.DetailsFragment
 import com.sadadnan.boshontomovieplayer.ui.listing.ListingFragment
+import org.imaginativeworld.whynotimagecarousel.listener.CarouselListener
+import org.imaginativeworld.whynotimagecarousel.model.CarouselItem
+import org.imaginativeworld.whynotimagecarousel.model.CarouselType
 
 class MainFragment : Fragment() {
 
@@ -30,7 +33,7 @@ class MainFragment : Fragment() {
 
     private var _binding: FragmentMainBinding? = null
     private lateinit var viewModel: MainViewModel
-    val imageList = ArrayList<SlideModel>() // Create image list
+    val imageList = ArrayList<CarouselItem>() // Create image list
 
     var featuredMovieList: List<Search?>? = null
 
@@ -61,19 +64,57 @@ class MainFragment : Fragment() {
 
         initializeRecyclerView()
 
+        initializeCarousel()
+
         observe()
 
         clickListeners()
 
     }
 
-    private fun clickListeners() {
+    private fun initializeCarousel() {
+        binding.imageSlider.registerLifecycle(viewLifecycleOwner)
+        binding.imageSlider.showIndicator = true
+        binding.imageSlider.carouselType = CarouselType.SHOWCASE
+        // If the width of a single item in ImageCarousel is not greater then
+        // half of the whole ImageCarousel view width, then the ImageCarousel
+        // will not work as expected, So it is recommended to set this value
+        // true all the time. So, the carousel will automatically increase the
+        // width of the items if necessary.
+        binding.imageSlider.autoWidthFixing = true
 
-        binding.imageSlider.setItemClickListener(object : ItemClickListener {
-            override fun onItemSelected(position: Int) {
-                Toast.makeText(context, "Position: $position", Toast.LENGTH_SHORT).show()
+        // If you want auto slide, turn this feature on.
+        binding.imageSlider.autoPlay = true
+        binding.imageSlider.autoPlayDelay = 3000 // Milliseconds
+
+        // Infinite scroll for the carousel.
+        binding.imageSlider.infiniteCarousel = true
+
+        //carousel click listener
+        binding.imageSlider.carouselListener = object : CarouselListener {
+
+            override fun onBindViewHolder(binding: ViewBinding, item: CarouselItem, position: Int) {
+
             }
-        })
+
+            override fun onClick(position: Int, carouselItem: CarouselItem) {
+                val movieId = featuredMovieList?.get(position)?.imdbID
+                val detailsFragment = movieId?.let { DetailsFragment.newInstance(it) }
+                val transaction = activity?.supportFragmentManager?.beginTransaction()
+                if (detailsFragment != null) {
+                    transaction?.replace(R.id.container, detailsFragment)
+                    transaction?.addToBackStack(null)
+                    transaction?.commit()
+                }
+            }
+
+            override fun onLongClick(position: Int, dataObject: CarouselItem) {
+
+            }
+        }
+    }
+
+    private fun clickListeners() {
 
         binding.batmanMore.setOnClickListener {
             //navigate to ListingFragment
@@ -111,10 +152,10 @@ class MainFragment : Fragment() {
                         val title = movie?.title
                         val year = movie?.year
 
-                        imageList.add(SlideModel(data?.get(i)?.poster, "$title ($year)"))
+                        imageList.add(CarouselItem(movie?.poster, "$title ($year)"))
 
                     }
-                    binding.imageSlider.setImageList(imageList)
+                    binding.imageSlider.setData(imageList)
 
                 }
                 Resource.Status.ERROR -> {

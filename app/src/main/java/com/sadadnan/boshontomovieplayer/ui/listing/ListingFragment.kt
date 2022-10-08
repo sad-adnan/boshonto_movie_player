@@ -50,7 +50,15 @@ class ListingFragment : Fragment() {
 
         observe()
 
+        clickListeners()
+
         initializeRecyclerView()
+    }
+
+    private fun clickListeners() {
+        binding.backBtn.setOnClickListener {
+            activity?.onBackPressed()
+        }
     }
 
     private fun initializeRecyclerView() {
